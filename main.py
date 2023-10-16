@@ -168,10 +168,10 @@ class MyTableWidget(QWidget):
             item = QGraphicsPixmapItem(QPixmap.fromImage(image))
             scene = QGraphicsScene()
             scene.addItem(item)
-            self.imageView.setScene(scene)
         else:
             scene = QGraphicsScene()
-            self.imageView.setScene(scene)
+
+        self.imageView.setScene(scene)
 
     def loadVideo(self):
         dialog = QFileDialog()
@@ -222,12 +222,10 @@ class MyTableWidget(QWidget):
                 item = QGraphicsPixmapItem(QPixmap.fromImage(image))
                 scene = QGraphicsScene()
                 scene.addItem(item)
-                self.videoView.setScene(scene)
             else:
                 scene = QGraphicsScene()
-                self.videoView.setScene(scene)
-
-            if cv2.waitKey(1) & 0xFF == ord('q') or (self.on == False):
+            self.videoView.setScene(scene)
+            if cv2.waitKey(1) & 0xFF == ord('q') or not self.on:
                 break
 
         video.release()
@@ -241,7 +239,7 @@ class MyTableWidget(QWidget):
         s = self.scaleSpinBox.value()
         m = self.minNeighborSpinBox.value()
         cap = cv2.VideoCapture(0)
-        while (self.on):
+        while self.on:
             ret, img = cap.read()
             gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             faces = face_cascade.detectMultiScale(gray, s, m)
@@ -259,11 +257,10 @@ class MyTableWidget(QWidget):
                 item = QGraphicsPixmapItem(QPixmap.fromImage(image))
                 scene = QGraphicsScene()
                 scene.addItem(item)
-                self.camView.setScene(scene)
             else:
                 scene = QGraphicsScene()
-                self.camView.setScene(scene)
-            if (cv2.waitKey(1) & 0xFF == ord('q')) or (self.on == False):
+            self.camView.setScene(scene)
+            if cv2.waitKey(1) & 0xFF == ord('q') or not self.on:
                 break
         cap.release()
         cv2.destroyAllWindows()
